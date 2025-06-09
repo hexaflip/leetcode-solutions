@@ -22,6 +22,6 @@ public:
         int left = maxDepth(root->left);
         int right = maxDepth(root->right);
 
-        return std::max(left, right);
+        return 1 + std::max(left, right);
     }
 };
