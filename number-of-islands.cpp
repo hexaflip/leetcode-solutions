@@ -1,0 +1,57 @@
+// 200. Number of Islands
+
+#include <math.h>
+#include <queue>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+// Given an m x n 2D binary grid grid which represents a map of '1's (land) and '0's (water), return the number of islands.
+// An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. 
+// You may assume all four edges of the grid are all surrounded by water.
+
+int numIslands(vector<vector<char>>& grid) {
+    int count = 0;
+    int n = grid.size();
+    int m = grid.at(0).size();
+    vector<vector<bool>> visited(n, vector<bool>(m, false)); 
+    // O (N * M)
+    for (int i = 0; i < n; i++){
+        for (int j = 0; j < m; j++){
+            // O(1)
+            if (grid[i][j] == '1' && !visited[i][j]){
+                bfs(i, j, grid, visited);
+                count++;
+            }
+        }
+    }
+    return count;
+}
+
+
+void bfs(int i , int j, vector<vector<char>> & graph, vector<vector<bool>> & visited){
+    int n = graph.size();
+    int m = graph[0].size();
+    std::queue<pair<int, int>> adt;
+    adt.push({i, j});
+    visited[i][j] = true;
+
+    vector<pair<int, int>> directions = {{-1,0}, {1,0}, {0,-1}, {0,1}};
+
+    while(!adt.empty()){
+        auto [x, y] = adt.front();
+        adt.pop();
+
+        for (auto [dx, dy] : directions) {
+            int nx = x + dx;
+            int ny = y + dy;
+
+            if (nx >= 0 && nx < n && ny >= 0 && ny < m &&
+                !visited[nx][ny] && graph[nx][ny] == '1') {
+                adt.push({nx, ny});
+                visited[nx][ny] = true;
+            }
+        }
+    }
+}
